@@ -10,7 +10,8 @@ use POSIX qw(strftime);
 # http://www.tutorialspoint.com/perl/perl_directories.htm
 
 
-&create_and_write_csv();
+#&create_and_write_csv();
+&make_directory(strftime("%d-%m-%Y_%H:%M:%S", localtime(time)));
 
 sub create_and_write_csv {
 	my $directory = "./Reports";
@@ -20,5 +21,11 @@ sub create_and_write_csv {
 	print FH "Peter Tran, 26, UCL \n";
 	print FH "Joe Bloggs, 28, King's College London \n";
 	close FH; 
+	return;
+}
+
+sub make_directory {
+	my ($directory) = @_;
+	mkdir($directory, 0775) or die "Could not create directory $directory\n";
 	return;
 }
