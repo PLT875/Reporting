@@ -9,8 +9,6 @@ use Data::Dumper;
 # http://www.tutorialspoint.com/perl/perl_open.htm
 # http://www.tutorialspoint.com/perl/perl_directories.htm
 
-#&make_directory(strftime("%d-%m-%Y_%H:%M", localtime(time)));
-
 my @matrix;
 $matrix[0][0] = 'Name';
 $matrix[0][1] = 'Occupation';
@@ -22,12 +20,13 @@ $matrix[2][0] = 'Joe Bloggs';
 $matrix[2][1] = 'Tester';
 
 &create_and_write_csv(@matrix);
-&zip_directory();
+#&zip_directory();
 
 sub create_and_write_csv {
 	my(@matrix) = @_;
+	my $directory = &make_directory();
 	my $filename = strftime("%d-%m-%Y_%H-%M-%S", localtime(time));
-	open(FH, ">./Reports/$filename.csv") or die "Error: Can't open file $filename.csv\n";
+	open(FH, ">./$directory/$filename.csv") or die "Error: Can't open file $filename.csv\n";
 	foreach my $row(@matrix){
 		my $current_column_no = 0;
 		my $last_column_no_current_row = scalar(@{ $row }) - 1;
@@ -47,18 +46,20 @@ sub create_and_write_csv {
 	}
 
 	close(FH);
+	&zip_directory($directory);
 	return;	
 }
 
 sub make_directory {
-	my ($directory) = @_;
+	my $directory = strftime("%d-%m-%Y_%H-%M", localtime(time));
 	mkdir($directory, 0775) or die "Could not create directory $directory\n";
-	return;
+	return $directory;
 }
 
 sub zip_directory {
-	print "Zipping \n";
-	system("zip -r Reports Reports");
+	my($directory) = @_;
+	print "Zipping:  $directory\n";
+	my $zip = `zip -r $directory $directory`;
 	return;
 }
 
