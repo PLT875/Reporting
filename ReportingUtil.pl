@@ -22,13 +22,10 @@ $matrix[2][0] = 'Joe Bloggs';
 $matrix[2][1] = 'Tester';
 
 &create_and_write_csv(@matrix);
-#&open_close_directory();
 &zip_directory();
 
 sub create_and_write_csv {
 	my(@matrix) = @_;
-	#my $directory = "./Reports";
-	#chdir($directory) or die "Could not go to $directory\n";
 	my $filename = strftime("%d-%m-%Y_%H-%M-%S", localtime(time));
 	open(FH, ">./Reports/$filename.csv") or die "Error: Can't open file $filename.csv\n";
 	foreach my $row(@matrix){
@@ -51,11 +48,6 @@ sub create_and_write_csv {
 
 	close(FH);
 	return;	
-}
-
-sub open_close_directory {
-	open(FH, ">./Reports/filename.csv") or die "Error: Can't open file filename.csv\n";
-	close FH;
 }
 
 sub make_directory {
