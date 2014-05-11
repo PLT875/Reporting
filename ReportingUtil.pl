@@ -20,7 +20,8 @@ $matrix[1][2] = 'Java, Perl, PHP';
 $matrix[2][0] = 'Joe Bloggs';
 $matrix[2][1] = 'Tester';
 
-&create_and_write_csv(@matrix);
+#&create_and_write_csv(@matrix);
+&zip_directory();
 
 sub create_and_write_csv {
 	my(@matrix) = @_;
@@ -53,6 +54,12 @@ sub create_and_write_csv {
 sub make_directory {
 	my ($directory) = @_;
 	mkdir($directory, 0775) or die "Could not create directory $directory\n";
+	return;
+}
+
+sub zip_directory {
+	print "Zipping \n";
+	system("zip -r Reports Reports");
 	return;
 }
 
