@@ -1,6 +1,7 @@
 use strict;
 use warnings;
 use POSIX qw(strftime);
+use Cwd qw(abs_path);
 use Data::Dumper;
 
 # Online Resources
@@ -20,15 +21,16 @@ $matrix[1][2] = 'Java, Perl, PHP';
 $matrix[2][0] = 'Joe Bloggs';
 $matrix[2][1] = 'Tester';
 
-#&create_and_write_csv(@matrix);
+&create_and_write_csv(@matrix);
+#&open_close_directory();
 &zip_directory();
 
 sub create_and_write_csv {
 	my(@matrix) = @_;
-	my $directory = "./Reports";
-	chdir($directory) or die "Could not go to $directory\n";
+	#my $directory = "./Reports";
+	#chdir($directory) or die "Could not go to $directory\n";
 	my $filename = strftime("%d-%m-%Y_%H-%M-%S", localtime(time));
-	open(FH, ">$filename.csv") or die "Error: Can't open file $filename.csv\n";
+	open(FH, ">./Reports/$filename.csv") or die "Error: Can't open file $filename.csv\n";
 	foreach my $row(@matrix){
 		my $current_column_no = 0;
 		my $last_column_no_current_row = scalar(@{ $row }) - 1;
@@ -49,6 +51,11 @@ sub create_and_write_csv {
 
 	close(FH);
 	return;	
+}
+
+sub open_close_directory {
+	open(FH, ">./Reports/filename.csv") or die "Error: Can't open file filename.csv\n";
+	close FH;
 }
 
 sub make_directory {
