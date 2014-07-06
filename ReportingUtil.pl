@@ -1,13 +1,15 @@
-use strict;
+
 use warnings;
 use POSIX qw(strftime);
 use Cwd qw(abs_path);
 use Data::Dumper;
+use Text::CSV_XS;
 
 # Online Resources
 # ----------------
 # http://www.tutorialspoint.com/perl/perl_open.htm
 # http://www.tutorialspoint.com/perl/perl_directories.htm
+# http://search.cpan.org/~hmbrand/Text-CSV_XS-1.09/CSV_XS.pm 
 
 my @matrix;
 $matrix[0][0] = 'Name';
@@ -19,8 +21,19 @@ $matrix[1][2] = 'Java, Perl, PHP';
 $matrix[2][0] = 'Joe Bloggs';
 $matrix[2][1] = 'Tester';
 
-&create_and_write_csv(@matrix);
+#&create_and_write_csv(@matrix);
 #&zip_directory();
+
+&write_csv;
+sub write_csv {
+	my @person = ("Name", "Peter Tran");
+	my @skills = ("Languages", "Java, PHP, Perl");
+	my $csv = Text::CSV_XS->new({ binary => 1, auto_diag => 1, eol => $/ });
+	open $file, ">:encoding(utf8)", "New.csv";
+	$csv->print($file, \@person);
+	$csv->print($file, \@skills);
+	close($file);
+}
 
 sub create_and_write_csv {
 	my(@matrix) = @_;
